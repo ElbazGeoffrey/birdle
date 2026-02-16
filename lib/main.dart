@@ -18,3 +18,16 @@ class MainApp extends StatelessWidget {
     );
   }
 }
+
+
+class Ball extends StatelessWidget {
+    const Ball({super.key})
+
+    
+    @override
+    Widget build(BuildContext context) {
+        return GestureDetector(
+          
+        )
+      }
+  }
