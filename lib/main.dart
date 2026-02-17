@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'game.dart';
 
 void main() {
   runApp(const MainApp());
@@ -12,7 +13,7 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(
       home: Scaffold(
         body: Center(
-          child: const BallSelector(),
+          child: const BallSelector(ballSelected: ballSelected),
         ),
       ),
     );
@@ -20,6 +21,7 @@ class MainApp extends StatelessWidget {
 }
 
 
+//literally just a colored circle
 class Ball extends StatelessWidget {
     const Ball({super.key, required this.color});
     final Color color;
@@ -39,18 +41,53 @@ class Ball extends StatelessWidget {
 }
 
 
+
+//row buttons to select what color to put next
 class BallSelector extends StatelessWidget {
-  const BallSelector({super.key});
+  const BallSelector({super.key, required this.ballSelected});
+
+  final void Function(Color) ballSelected;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        GestureDetector(onTap: () { debugPrint("green"); }, child: const Ball(color: Colors.green)),
-        GestureDetector(onTap: () { debugPrint("red"); }, child: const Ball(color: Colors.red)),
-        GestureDetector(onTap: () { debugPrint("blue"); }, child: const Ball(color: Colors.blue)),
-        GestureDetector(onTap: () { debugPrint("yellow"); }, child: const Ball(color: Colors.yellow)),
+        GestureDetector(
+          onTap: () {
+            debugPrint("green"); 
+
+            ballSelected(Colors.green);
+          }
+          , child: const Ball(color: Colors.green)
+        ),
+
+        GestureDetector(
+          onTap: () {
+            debugPrint("red");
+
+            ballSelected(Colors.red);
+          }, 
+          child: const Ball(color: Colors.red)
+        ),
+
+        GestureDetector(
+          onTap: () { 
+            debugPrint("blue"); 
+
+            ballSelected(Colors.blue);
+          },
+          child: const Ball(color: Colors.blue)
+        ),
+
+        GestureDetector(
+          onTap: () {
+            debugPrint("yellow");
+
+            ballSelected(Colors.yellow);
+          },
+          child: const Ball(color: Colors.yellow)
+        ),
       ],
     );
   }
