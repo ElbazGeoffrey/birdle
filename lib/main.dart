@@ -13,9 +13,48 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(
       home: Scaffold(
         body: Center(
-          child: const BallSelector(ballSelected: ballSelected),
+          child: GameScreen(),
         ),
       ),
+    );
+  }
+}
+
+
+class GameScreen extends StatefulWidget {
+  const GameScreen({super.key});
+
+  @override
+  State<GameScreen> createState() => GameScreenState();
+}
+
+class GameScreenState extends State<GameScreen> {
+  HitType currentHit = HitType.none;
+  Color selectedColor = Colors.transparent;
+  
+  void ballSelected(Color color) {
+  setState(() {
+      selectedColor = color;
+      if (color == Colors.blue) {
+         currentHit= HitType.hit;
+      }
+      else {
+          currentHit = HitType.miss;
+        }
+    }
+
+  );
+  }
+
+   @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Tile(color: selectedColor, hitType: currentHit),
+        const SizedBox(height: 20),
+        BallSelector(ballSelected: ballSelected),
+      ],
     );
   }
 }
@@ -30,16 +69,14 @@ class Ball extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 50,
-      height: 50,
       decoration: BoxDecoration(
         color: color,
         shape: BoxShape.circle,
+        border: Border.all(color: Colors.black, width: 2),
       ),
     );
   }
 }
-
 
 
 //row buttons to select what color to put next
@@ -58,8 +95,15 @@ class BallSelector extends StatelessWidget {
             debugPrint("green"); 
 
             ballSelected(Colors.green);
-          }
-          , child: const Ball(color: Colors.green)
+          },
+          child: Center(
+            child:
+              SizedBox(
+                width: 50,
+                height: 50,
+                child: const Ball(color: Colors.green),
+              ),
+          ),
         ),
 
         GestureDetector(
@@ -68,7 +112,14 @@ class BallSelector extends StatelessWidget {
 
             ballSelected(Colors.red);
           }, 
-          child: const Ball(color: Colors.red)
+          child: Center(
+            child:
+              SizedBox(
+                width: 50,
+                height: 50,
+                child: const Ball(color: Colors.red),
+              ),
+          ),
         ),
 
         GestureDetector(
@@ -77,7 +128,14 @@ class BallSelector extends StatelessWidget {
 
             ballSelected(Colors.blue);
           },
-          child: const Ball(color: Colors.blue)
+          child: Center(
+            child:
+              SizedBox(
+                width: 50,
+                height: 50,
+                child: const Ball(color: Colors.blue),
+              ),
+          ),
         ),
 
         GestureDetector(
@@ -86,9 +144,50 @@ class BallSelector extends StatelessWidget {
 
             ballSelected(Colors.yellow);
           },
-          child: const Ball(color: Colors.yellow)
+          child: Center(
+            child:
+              SizedBox(
+                width: 50,
+                height: 50,
+                child: const Ball(color: Colors.yellow),
+              ),
+          ),
         ),
       ],
     );
   }
 }
+
+class Tile extends StatelessWidget {
+  const Tile({super.key, required this.color, required this.hitType});
+
+  final HitType hitType;
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 60,
+      height: 60,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+
+        color: switch (hitType) {
+          HitType.hit => Colors.green,
+          HitType.partial => Colors.yellow,
+          HitType.miss => Colors.grey,
+          _ => Colors.white,
+        },
+      ),
+      child: Center(
+        child: SizedBox(
+          width: 50,  
+          height: 50,
+          child: Ball(color: color),
+        ),
+      ),
+    );
+  }
+}
+
